@@ -12,7 +12,7 @@ import { UserModule } from './user/user.module';
     }),
     MongooseModule.forRootAsync({
       useFactory: () => ({
-        uri: process.env.DATABASE_MONGOOSE
+        uri: 'mongodb+srv://yourit:Zazapu1995@cluster0.byszzuk.mongodb.net/?retryWrites=true&w=majority'
       }),
     }),
     UserModule,
