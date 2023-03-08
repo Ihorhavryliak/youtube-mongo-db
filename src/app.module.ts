@@ -10,9 +10,11 @@ import { UserModule } from './user/user.module';
       isGlobal: true,
       cache: true,
     }),
-    MongooseModule.forRoot(
-      'mongodb+srv://yourit:Zazapu1995@cluster0.byszzuk.mongodb.net/?retryWrites=true&w=majority',
-    ),
+    MongooseModule.forRootAsync({
+      useFactory: () => ({
+        uri: process.env.DATABASE_MONGOOSE
+      }),
+    }),
     UserModule,
   ],
   controllers: [],
