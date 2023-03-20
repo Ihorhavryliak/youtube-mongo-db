@@ -1,7 +1,10 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { CacheInterceptor, Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
+import {CacheModule} from '@nestjs/common'
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { CacheConfigService } from './user/cache/config.cache';
 
 @Module({
   imports: [
@@ -16,8 +19,17 @@ import { UserModule } from './user/user.module';
       }),
     }),
     UserModule,
+    CacheModule.registerAsync({
+      imports: [ConfigModule],
+      useExisting: CacheConfigService
+    })
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor
+    }
+  ],
 })
 export class AppModule {}
