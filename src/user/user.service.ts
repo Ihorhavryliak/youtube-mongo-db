@@ -8,7 +8,7 @@ import {Cache} from 'cache-manager'
 @Injectable()
 export class UserService{
     constructor(@InjectModel('User') private userModel: Model<UserType>,
-    @Inject(CACHE_MANAGER) private cacheMAnager: Cache){}
+    ){}
 
     async createUser(createUserDto: CreateUserDto): Promise<UserType>{
       const createUser = await this.userModel.create(createUserDto)
@@ -16,14 +16,10 @@ export class UserService{
     }
 
     async findAll(): Promise<UserType[]>{
-
-      let value = await this.cacheMAnager.get('user') as UserType[] | null
-      if(!value){
+    
         const users = this.userModel.find().exec()
-        await this.cacheMAnager.set('user', users, 0)
-      }
-      await this.cacheMAnager.reset()
-      return value
+  
+      return users
     }
 
 }

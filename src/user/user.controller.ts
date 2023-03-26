@@ -5,6 +5,7 @@ import {
   CacheInterceptor,
   CacheKey,
   CacheTTL,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   Param,
@@ -16,28 +17,32 @@ import {
   UseInterceptors,
   UsePipes,
   ValidationPipe,
+  Version,
+  VERSION_NEUTRAL,
 } from '@nestjs/common';
 import { CreateUserDto } from './userDto/create-user.dto';
+import { Expose } from 'class-transformer';
 
-@Controller()
+@Controller(
+
+)
 
 export class UserController {
   constructor(private userService: UserService) {}
-  @Post()
-  async createUser(
-    @Body(new ParseArrayPipe({ items: CreateUserDto }))
-    createUserDto: CreateUserDto[],
-  ) {
-    return this.userService.createUser(createUserDto[0]);
+
+ 
+  @Get()
+  async findAll(): Promise<CreateUserDto> {
+    return  new CreateUserDto({
+      name: 'Taras',
+      lastName: 'One',
+      password: '1234'
+    })
   }
 
-  @Get()
-  @CacheKey('users')
-  @CacheTTL(30)
-  async findAll(
-    @Query('ids', new ParseArrayPipe({ items: Number, separator: ',' }))
-    ids: number[],
-  ) {
-    return this.userService.findAll();
-  }
+
+ 
+
+
+  
 }

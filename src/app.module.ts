@@ -1,4 +1,4 @@
-import { CacheInterceptor, Module } from '@nestjs/common';
+import { CacheInterceptor, MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
@@ -19,17 +19,17 @@ import { CacheConfigService } from './user/cache/config.cache';
       }),
     }),
     UserModule,
-    CacheModule.registerAsync({
-      imports: [ConfigModule],
-      useExisting: CacheConfigService
-    })
+
   ],
   controllers: [],
   providers: [
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor
-    }
+  
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply()
+      .forRoutes({path: 'user', method: RequestMethod.GET, version: '2'})
+  }
+}
