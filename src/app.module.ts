@@ -2,9 +2,10 @@ import { CacheInterceptor, MiddlewareConsumer, Module, NestModule, RequestMethod
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
-import {CacheModule} from '@nestjs/common'
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { CacheConfigService } from './user/cache/config.cache';
+import {ScheduleModule} from '@nestjs/schedule'
+import { TaskModule } from './tasks/task.module';
+
+
 
 @Module({
   imports: [
@@ -19,16 +20,19 @@ import { CacheConfigService } from './user/cache/config.cache';
       }),
     }),
     UserModule,
-
+    ScheduleModule.forRoot(),
+    TaskModule,
+    
   ],
   controllers: [],
   providers: [
-  
+    
   ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
+    
       .apply()
       .forRoutes({path: 'user', method: RequestMethod.GET, version: '2'})
   }

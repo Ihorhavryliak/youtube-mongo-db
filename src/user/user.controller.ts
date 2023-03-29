@@ -23,26 +23,16 @@ import {
 import { CreateUserDto } from './userDto/create-user.dto';
 import { Expose } from 'class-transformer';
 
-@Controller(
-
-)
-
+@Controller()
 export class UserController {
   constructor(private userService: UserService) {}
 
- 
   @Get()
   async findAll(): Promise<CreateUserDto> {
-    return  new CreateUserDto({
+    return new CreateUserDto({
       name: 'Taras',
       lastName: 'One',
-      password: '1234'
-    })
+      password: '1234',
+    });
   }
-
-
- 
-
-
-  
 }
