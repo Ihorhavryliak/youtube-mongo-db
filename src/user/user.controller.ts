@@ -1,3 +1,4 @@
+import { FastifyReply, FastifyRequest } from 'fastify';
 import { UserService } from './user.service';
 import {
   BadRequestException,
@@ -14,6 +15,8 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  Req,
+  Res,
   UseInterceptors,
   UsePipes,
   ValidationPipe,
@@ -22,17 +25,15 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './userDto/create-user.dto';
 import { Expose } from 'class-transformer';
+import { Cookies } from 'src/decorators/cookies.decorator';
+
 
 @Controller()
 export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  async findAll(): Promise<CreateUserDto> {
-    return new CreateUserDto({
-      name: 'Taras',
-      lastName: 'One',
-      password: '1234',
-    });
+  async findAll(@Cookies() name : string) {
+    console.log(name)
   }
 }
