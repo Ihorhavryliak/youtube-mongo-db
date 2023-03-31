@@ -1,3 +1,4 @@
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import {
   CacheInterceptor,
   MiddlewareConsumer,
@@ -36,7 +37,10 @@ import { AudioModule } from './audio/audio.module';
       },
     }),
     }),
-    AudioModule
+    AudioModule,
+    EventEmitterModule.forRoot({
+      wildcard: true
+    })
   ],
   controllers: [],
   providers: [],

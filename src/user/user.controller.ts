@@ -33,7 +33,7 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  async findAll(@Cookies() name : string) {
-    console.log(name)
+  async findAll() {
+   return this.userService.findAll()
   }
 }
