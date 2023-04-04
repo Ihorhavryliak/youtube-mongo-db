@@ -13,6 +13,8 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { TaskModule } from './tasks/task.module';
 import { BullModule } from '@nestjs/bull';
 import { AudioModule } from './audio/audio.module';
+import { FastifyMulterModule } from '@nest-lab/fastify-multer';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -40,7 +42,9 @@ import { AudioModule } from './audio/audio.module';
     AudioModule,
     EventEmitterModule.forRoot({
       wildcard: true
-    })
+    }),
+    FastifyMulterModule,
+
   ],
   controllers: [],
   providers: [],
