@@ -1,3 +1,4 @@
+import * as secureSession from '@fastify/secure-session';
 import { UserService } from './user.service';
 import {
   Controller,
@@ -9,6 +10,9 @@ import {
   ParseFilePipe,
   ParseFilePipeBuilder,
   Post,
+  Render,
+  Req,
+  Session,
   UploadedFile,
   UploadedFiles,
   UseInterceptors,
@@ -21,18 +25,30 @@ import {
 } from '@nest-lab/fastify-multer';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { FastifyRequest } from 'fastify';
 
 @Controller()
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @Get()
+  @Render('index.hbs')
+  root() {
+    return {message : 'Hello world!!!'}
+  }
+
+
+
   @Get('users')
-  async findAllTest() {
+  async findAllTest(@Session() session: secureSession.Session) {
+    const visits = session.get('visits');
+    session.set('visits', visits ? visits + 1 : 1);
+    console.log(visits);
     return this.userService.findAllNew();
   }
 
   @Get('test')
-  async findAll() {
+  async findAll(@Req() request: FastifyRequest) {
     return this.userService.findAll();
   }
 
