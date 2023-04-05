@@ -14,6 +14,7 @@ import {
   Req,
   Res,
   Session,
+  Sse,
   UploadedFile,
   UploadedFiles,
   UseInterceptors,
@@ -25,12 +26,33 @@ import {
   FileInterceptor,
 } from '@nest-lab/fastify-multer';
 import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { extname, join } from 'path';
 import { FastifyRequest } from 'fastify';
+import { Observable, interval, map } from 'rxjs';
+import { Response } from 'express';
+import { readFileSync } from 'fs';
+
+export interface MessageEvent {
+  data: string | object;
+  id?: string;
+  type?: string;
+  retry?: number;
+}
 
 @Controller()
 export class UserController {
   constructor(private userService: UserService) {}
+
+  @Get('index')
+  indexNew(@Res() response: Response){
+    response.type('text/html').send(readFileSync(join(__dirname, '../../src', 'index.html')))
+  }
+
+  @Sse('sse')
+  sse(): Observable<MessageEvent> {
+    return interval(1000).pipe(map((_) => ({data: {hello: 'word'}})))
+  }
+
 
   @Get('post')
   index(@Res() res){
