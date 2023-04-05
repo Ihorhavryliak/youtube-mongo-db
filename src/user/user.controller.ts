@@ -12,6 +12,7 @@ import {
   Post,
   Render,
   Req,
+  Res,
   Session,
   UploadedFile,
   UploadedFiles,
@@ -30,6 +31,11 @@ import { FastifyRequest } from 'fastify';
 @Controller()
 export class UserController {
   constructor(private userService: UserService) {}
+
+  @Get('post')
+  index(@Res() res){
+    res.status(302).redirect('/login')
+  }
 
   @Get()
   @Render('index.hbs')
